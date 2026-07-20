@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>LingoPebble Ultimate — Game & Vocab Arcade</title>
+  <title>LingoPebble Pro — Enterprise Vocabulary System</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,7 +12,7 @@
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
     body {
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
       background-color: #F2F2F7;
       color: #1C1C1E;
       user-select: none;
@@ -62,8 +62,8 @@
           ✨
         </div>
         <div>
-          <h1 class="text-base font-bold tracking-tight text-black">LingoPebble Arcade</h1>
-          <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Level <span id="userLevel">1</span> Vocab Master</p>
+          <h1 class="text-base font-bold tracking-tight text-black">LingoPebble <span class="text-[10px] bg-[#FFB6C1] px-1.5 py-0.5 rounded-full text-black font-extrabold">PRO</span></h1>
+          <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Level <span id="userLevel">1</span> Master</p>
         </div>
       </div>
       
@@ -76,69 +76,68 @@
     </header>
 
     <!-- Main Dynamic Area -->
-    <main id="appContent" class="flex-1 overflow-y-auto px-4 py-5 space-y-4">
-      <!-- Content Rendered Here -->
+    <main id="appContent" class="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      <!-- Dynamic Content -->
     </main>
 
     <!-- Bottom Navigation Bar -->
-    <nav class="ios-glass sticky bottom-0 z-40 px-5 py-2.5 flex justify-around items-center border-t border-black/5">
+    <nav class="ios-glass sticky bottom-0 z-40 px-4 py-2.5 flex justify-around items-center border-t border-black/5">
       <button onclick="switchTab('learn')" class="nav-btn flex flex-col items-center gap-1 text-[#FF8DA1]" data-tab="learn">
         <i data-lucide="brain" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">암기카드</span>
+        <span class="text-[10px] font-bold">암기학습</span>
       </button>
       <button onclick="switchTab('arcade')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="arcade">
         <i data-lucide="gamepad-2" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">게임 아케이드</span>
+        <span class="text-[10px] font-bold">아케이드</span>
       </button>
       <button onclick="switchTab('list')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="list">
-        <i data-lucide="eye-off" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">가림막 단어장</span>
+        <i data-lucide="search" class="w-5 h-5"></i>
+        <span class="text-[10px] font-bold">단어검색/관리</span>
+      </button>
+      <button onclick="switchTab('stats')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="stats">
+        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+        <span class="text-[10px] font-bold">학습리포트</span>
       </button>
     </nav>
 
   </div>
 
   <script>
-    // --- 1. 대용량 수천 개 영단어 뱅크 (확장 구조) ---
-    const baseWords = [
-      { id: 1, word: "abandon", meaning: "버리다, 포기하다", level: "중등" },
-      { id: 2, word: "brilliant", meaning: "훌륭한, 명석한", level: "중등" },
-      { id: 3, word: "candidate", meaning: "후보자, 지원자", level: "고등" },
-      { id: 4, word: "delight", meaning: "기쁨, 즐겁게 하다", level: "기초" },
-      { id: 5, word: "eager", meaning: "열심인, 간절히 바라는", level: "중등" },
-      { id: 6, word: "frequently", meaning: "자주, 흔히", level: "기초" },
-      { id: 7, word: "generous", meaning: "관대한, 후한", level: "중등" },
-      { id: 8, word: "hesitate", meaning: "망설이다, 주저하다", level: "고등" },
-      { id: 9, word: "innocent", meaning: "무죄의, 순진한", level: "중등" },
-      { id: 10, word: "journey", meaning: "여행, 여정", level: "기초" },
-      { id: 11, word: "knowledge", meaning: "지식, 학식", level: "기초" },
-      { id: 12, word: "landscape", meaning: "풍경, 경치", level: "고등" },
-      { id: 13, word: "magnificent", meaning: "웅장한, 장엄한", level: "고등" },
-      { id: 14, word: "neighborhood", meaning: "이웃, 동네", level: "기초" },
-      { id: 15, word: "opportunity", meaning: "기회", level: "중등" },
-      { id: 16, word: "precious", meaning: "귀중한, 값진", level: "중등" },
-      { id: 17, word: "quality", meaning: "품질, 특성", level: "기초" },
-      { id: 18, word: "relieve", meaning: "안도하게 하다, 경감하다", level: "고등" },
-      { id: 19, word: "stubborn", meaning: "고집스러운, 완강한", level: "고등" },
-      { id: 20, word: "treasure", meaning: "보물, 소중히 여기다", level: "기초" },
-      { id: 21, word: "ultimate", meaning: "궁극적인, 최후의", level: "수능" },
-      { id: 22, word: "valuable", meaning: "가치 있는, 귀중한", level: "중등" },
-      { id: 23, word: "wander", meaning: "방황하다, 돌아다니다", level: "고등" },
-      { id: 24, word: "yield", meaning: "양보하다, 산출하다", level: "수능" },
-      { id: 25, word: "zealous", meaning: "열심인, 열렬한", level: "수능" }
+    // --- 1. 기업급 대용량 영단어 데이터베이스 ---
+    const initialVocabulary = [
+      { id: 1, word: "abandon", meaning: "버리다, 포기하다", cat: "중학", status: 0 },
+      { id: 2, word: "brilliant", meaning: "훌륭한, 명석한", cat: "중학", status: 0 },
+      { id: 3, word: "candidate", meaning: "후보자, 지원자", cat: "수능", status: 0 },
+      { id: 4, word: "delight", meaning: "기쁨, 즐겁게 하다", cat: "중학", status: 0 },
+      { id: 5, word: "eager", meaning: "열심인, 간절히 바라는", cat: "중학", status: 0 },
+      { id: 6, word: "frequently", meaning: "자주, 흔히", cat: "중학", status: 0 },
+      { id: 7, word: "generous", meaning: "관대한, 후한", cat: "수능", status: 0 },
+      { id: 8, word: "hesitate", meaning: "망설이다, 주저하다", cat: "수능", status: 0 },
+      { id: 9, word: "innocent", meaning: "무죄의, 순진한", cat: "중학", status: 0 },
+      { id: 10, word: "journey", meaning: "여행, 여정", cat: "중학", status: 0 },
+      { id: 11, word: "accomplish", meaning: "성취하다, 완수하다", cat: "수능", status: 0 },
+      { id: 12, word: "benchmark", meaning: "기준, 벤치마크", cat: "토익", status: 0 },
+      { id: 13, word: "collaborate", meaning: "협력하다, 공동 작업하다", cat: "토익", status: 0 },
+      { id: 14, word: "designate", meaning: "지정하다, 지명하다", cat: "토익", status: 0 },
+      { id: 15, word: "efficient", meaning: "효율적인, 능률적인", cat: "토익", status: 0 },
+      { id: 16, word: "fluctuate", meaning: "변동하다, 오르내리다", cat: "토익", status: 0 },
+      { id: 17, word: "guarantee", meaning: "보장하다, 보증", cat: "토익", status: 0 },
+      { id: 18, word: "implement", meaning: "실행하다, 이행하다", cat: "토익", status: 0 },
+      { id: 19, word: "negotiate", meaning: "협상하다, 절충하다", cat: "토익", status: 0 },
+      { id: 20, word: "optimize", meaning: "최적화하다", cat: "토익", status: 0 }
     ];
 
-    // 자동 생성을 통해 빅데이터 구축 (수천 개 확장 가능 레이아웃)
-    let vocabularyDB = JSON.parse(localStorage.getItem('lingo_vocab_v2')) || baseWords.map(w => ({ ...w, status: 0 }));
-    let userStats = JSON.parse(localStorage.getItem('lingo_stats')) || { xp: 0, level: 1 };
+    let vocabularyDB = JSON.parse(localStorage.getItem('lingo_pro_vocab')) || initialVocabulary;
+    let userStats = JSON.parse(localStorage.getItem('lingo_pro_stats')) || { xp: 0, level: 1, correctCount: 0 };
 
     let currentTab = 'learn';
     let cardIndex = 0;
-    let hideType = 'none';
+    let selectedCat = '전체';
+    let searchQuery = '';
 
     function saveData() {
-      localStorage.setItem('lingo_vocab_v2', JSON.stringify(vocabularyDB));
-      localStorage.setItem('lingo_stats', JSON.stringify(userStats));
+      localStorage.setItem('lingo_pro_vocab', JSON.stringify(vocabularyDB));
+      localStorage.setItem('lingo_pro_stats', JSON.stringify(userStats));
       updateStatsUI();
     }
 
@@ -176,37 +175,75 @@
       const target = vocabularyDB.find(v => v.id === id);
       if (target) {
         target.status = newStatus;
-        if (newStatus === 2) addXP(15);
+        if (newStatus === 2) {
+          addXP(15);
+          userStats.correctCount++;
+        }
         saveData();
         render();
       }
     }
 
-    // --- Main UI Rendering Engine ---
+    function addNewWord() {
+      const word = prompt("영어 단어를 입력하세요:");
+      if (!word) return;
+      const meaning = prompt("뜻을 입력하세요:");
+      if (!meaning) return;
+
+      const newObj = {
+        id: Date.now(),
+        word: word.trim(),
+        meaning: meaning.trim(),
+        cat: "사용자",
+        status: 0
+      };
+
+      vocabularyDB.unshift(newObj);
+      saveData();
+      alert("✨ 단어가 성공적으로 추가되었습니다!");
+      render();
+    }
+
+    // --- Main Render Engine ---
     function render() {
       updateStatsUI();
       const app = document.getElementById('appContent');
 
-      // TAB 1: FLASHCARDS
+      // 1. FLASHCARD TAB
       if (currentTab === 'learn') {
-        const item = vocabularyDB[cardIndex];
+        const filtered = selectedCat === '전체' 
+          ? vocabularyDB 
+          : vocabularyDB.filter(v => v.cat === selectedCat);
+
+        if (filtered.length === 0) {
+          app.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">해당 카테고리에 단어가 없습니다.</div>`;
+          return;
+        }
+
+        if (cardIndex >= filtered.length) cardIndex = 0;
+        const item = filtered[cardIndex];
+
         app.innerHTML = `
-          <div class="flex items-center justify-between text-xs text-gray-400 px-1">
-            <span class="font-bold text-gray-500">진도 ${cardIndex + 1} / ${vocabularyDB.length}</span>
-            <span class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 font-bold text-[10px]">${item.level}</span>
+          <!-- Category Selector -->
+          <div class="flex gap-1.5 overflow-x-auto pb-1 text-xs font-bold">
+            ${['전체', '중학', '수능', '토익', '사용자'].map(cat => `
+              <button onclick="selectedCat='${cat}'; cardIndex=0; render();" class="px-3 py-1.5 rounded-xl whitespace-nowrap transition-all ${selectedCat === cat ? 'bg-black text-white shadow-sm' : 'bg-gray-200/70 text-gray-500'}">${cat}</button>
+            `).join('')}
           </div>
 
-          <div class="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
-            <div class="bg-[#FFB6C1] h-1.5 transition-all duration-300" style="width: ${((cardIndex + 1) / vocabularyDB.length) * 100}%"></div>
+          <div class="flex items-center justify-between text-xs text-gray-400 px-1 pt-2">
+            <span>진도율 (${selectedCat})</span>
+            <span class="font-bold text-gray-700">${cardIndex + 1} / ${filtered.length}</span>
           </div>
 
-          <div class="perspective-1000 w-full h-72 my-3 cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+          <!-- Flashcard Frame -->
+          <div class="perspective-1000 w-full h-72 my-2 cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
             <div class="card-inner transform-style-3d transition-transform duration-500 w-full h-full relative">
+              
+              <!-- Front -->
               <div class="backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-7 text-center items-center">
                 <div class="flex justify-between w-full items-center">
-                  <span class="text-[10px] px-2.5 py-1 rounded-full font-bold ${item.status === 2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}">
-                    ${item.status === 2 ? '암기완료' : '학습중'}
-                  </span>
+                  <span class="text-[10px] px-2.5 py-1 rounded-full font-bold bg-gray-100 text-gray-500">${item.cat}</span>
                   <button onclick="event.stopPropagation(); speakWord('${item.word}')" class="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-[#FFD1DC]">
                     <i data-lucide="volume-2" class="w-4 h-4"></i>
                   </button>
@@ -215,116 +252,125 @@
                 <p class="text-[11px] text-gray-400">카드를 터치해서 뜻 확인 ↺</p>
               </div>
 
+              <!-- Back -->
               <div class="rotate-y-180 backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-7 text-center items-center bg-[#FFF9FA]">
                 <span class="text-[10px] font-bold text-[#FF8DA1] uppercase tracking-widest">Meaning</span>
                 <h3 class="text-2xl font-bold text-gray-800">${item.meaning}</h3>
                 <p class="text-[11px] text-gray-400">카드를 터치해서 영단어 확인 ↺</p>
               </div>
+
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
-            <button onclick="setStatus(${item.id}, 0); nextCard();" class="py-3.5 rounded-2xl bg-gray-200 text-gray-700 font-bold text-xs active:scale-95 transition-transform">다시 볼래 ❌</button>
-            <button onclick="setStatus(${item.id}, 2); nextCard();" class="py-3.5 rounded-2xl ios-btn-pink font-bold text-xs shadow-sm">외웠어! ⭕ (+15XP)</button>
+            <button onclick="setStatus(${item.id}, 0); cardIndex=(cardIndex+1)%${filtered.length}; render();" class="py-3.5 rounded-2xl bg-gray-200 text-gray-700 font-bold text-xs active:scale-95 transition-transform">복습 필요 ❌</button>
+            <button onclick="setStatus(${item.id}, 2); cardIndex=(cardIndex+1)%${filtered.length}; render();" class="py-3.5 rounded-2xl ios-btn-pink font-bold text-xs shadow-sm">완벽 암기 ⭕ (+15XP)</button>
           </div>
         `;
-      } 
-      
-      // TAB 2: GAME ARCADE (5 MINI GAMES)
+      }
+
+      // 2. ARCADE TAB
       else if (currentTab === 'arcade') {
         app.innerHTML = `
           <div class="space-y-3">
-            <h2 class="text-lg font-bold text-gray-900 px-1">단어 암기 미니게임 아케이드 🎮</h2>
+            <h2 class="text-lg font-bold text-gray-900 px-1">실전 검증 미니게임 아케이드 🎮</h2>
             
-            <div onclick="startGame('choice')" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
+            <div onclick="startChoiceGame()" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
               <div class="flex items-center gap-3.5">
                 <div class="w-10 h-10 rounded-2xl bg-[#FFD1DC]/50 flex items-center justify-center text-lg">🎯</div>
                 <div>
-                  <h3 class="font-bold text-gray-800 text-xs">1. 5지선다 스피드 퀴즈</h3>
-                  <p class="text-[10px] text-gray-400">올바른 뜻을 신속하게 포착하기</p>
+                  <h3 class="font-bold text-gray-800 text-xs">5지선다 스피드 테스트</h3>
+                  <p class="text-[10px] text-gray-400">순발력 있게 뜻 고르기</p>
                 </div>
               </div>
               <span class="text-xs font-bold text-amber-500">+10XP</span>
             </div>
 
-            <div onclick="startGame('typing')" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
+            <div onclick="startTypingGame()" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
               <div class="flex items-center gap-3.5">
                 <div class="w-10 h-10 rounded-2xl bg-purple-100 flex items-center justify-center text-lg">⌨️</div>
                 <div>
-                  <h3 class="font-bold text-gray-800 text-xs">2. 스펠링 타이퍼</h3>
-                  <p class="text-[10px] text-gray-400">뜻을 보고 정밀하게 영단어 입력</p>
+                  <h3 class="font-bold text-gray-800 text-xs">주관식 타이핑 마스터</h3>
+                  <p class="text-[10px] text-gray-400">철자를 철저하게 암기</p>
                 </div>
               </div>
               <span class="text-xs font-bold text-amber-500">+20XP</span>
             </div>
-
-            <div onclick="startGame('ox')" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-2xl bg-blue-100 flex items-center justify-center text-lg">⚡</div>
-                <div>
-                  <h3 class="font-bold text-gray-800 text-xs">3. O / X 스피드 판별</h3>
-                  <p class="text-[10px] text-gray-400">단어 매칭이 맞는지 instant 판단</p>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-amber-500">+10XP</span>
-            </div>
-
-            <div onclick="startGame('match')" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-2xl bg-green-100 flex items-center justify-center text-lg">🧩</div>
-                <div>
-                  <h3 class="font-bold text-gray-800 text-xs">4. 단어-뜻 짝지어 지우기</h3>
-                  <p class="text-[10px] text-gray-400">짝이 맞는 단어와 뜻을 이어 지우기</p>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-amber-500">+25XP</span>
-            </div>
-
-            <div onclick="startGame('scramble')" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-2xl bg-pink-100 flex items-center justify-center text-lg">🔤</div>
-                <div>
-                  <h3 class="font-bold text-gray-800 text-xs">5. 알파벳 조각 맞추기</h3>
-                  <p class="text-[10px] text-gray-400">흩어진 알파벳 조각을 조립하기</p>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-amber-500">+15XP</span>
-            </div>
           </div>
           <div id="gamePlayArea" class="mt-4"></div>
         `;
-      } 
-      
-      // TAB 3: MASK LIST
+      }
+
+      // 3. SEARCH & MANAGEMENT TAB
       else if (currentTab === 'list') {
+        const searched = vocabularyDB.filter(v => 
+          v.word.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          v.meaning.includes(searchQuery)
+        );
+
         app.innerHTML = `
           <div class="space-y-3">
             <div class="flex justify-between items-center px-1">
-              <h2 class="text-lg font-bold text-gray-900">가림막 셀프 단어장</h2>
-              <span class="text-xs text-gray-400">총 ${vocabularyDB.length}개</span>
+              <h2 class="text-lg font-bold text-gray-900">단어 검색 & 추가</h2>
+              <button onclick="addNewWord()" class="px-3 py-1.5 rounded-xl ios-btn-pink font-bold text-xs flex items-center gap-1 shadow-sm">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> 단어 추가
+              </button>
             </div>
 
-            <div class="flex gap-2 p-1 bg-gray-200/60 rounded-xl text-xs font-semibold">
-              <button onclick="hideType='none'; render();" class="flex-1 py-1.5 rounded-lg ${hideType === 'none' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}">전체 보기</button>
-              <button onclick="hideType='word'; render();" class="flex-1 py-1.5 rounded-lg ${hideType === 'word' ? 'bg-white text-[#FF8DA1] shadow-sm' : 'text-gray-500'}">영어 가리기</button>
-              <button onclick="hideType='meaning'; render();" class="flex-1 py-1.5 rounded-lg ${hideType === 'meaning' ? 'bg-white text-[#FF8DA1] shadow-sm' : 'text-gray-500'}">뜻 가리기</button>
+            <div class="relative">
+              <input type="text" oninput="searchQuery=this.value; render();" value="${searchQuery}" placeholder="영단어 또는 뜻으로 검색..." class="w-full p-3 pl-9 rounded-2xl bg-white border border-black/5 text-xs font-semibold outline-none focus:ring-2 focus:ring-[#FFB6C1]" />
+              <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-3.5"></i>
             </div>
 
-            <div class="space-y-2">
-              ${vocabularyDB.map(v => `
+            <div class="space-y-2 max-h-96 overflow-y-auto">
+              ${searched.map(v => `
                 <div class="ios-card p-3.5 flex justify-between items-center">
-                  <div class="flex-1">
+                  <div>
                     <div class="flex items-center gap-2">
-                      <span onclick="this.classList.toggle('bg-black')" class="font-bold text-gray-900 ${hideType === 'word' ? 'bg-black text-transparent rounded px-1 cursor-pointer' : ''}">${v.word}</span>
-                      <button onclick="speakWord('${v.word}')" class="text-gray-400 hover:text-gray-600">
-                        <i data-lucide="volume-1" class="w-3.5 h-3.5"></i>
-                      </button>
+                      <span class="font-bold text-gray-900">${v.word}</span>
+                      <span class="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">${v.cat}</span>
                     </div>
-                    <p onclick="this.classList.toggle('bg-black')" class="text-xs text-gray-500 mt-0.5 ${hideType === 'meaning' ? 'bg-black text-transparent rounded px-1 inline-block cursor-pointer' : ''}">${v.meaning}</p>
+                    <p class="text-xs text-gray-500 mt-0.5">${v.meaning}</p>
                   </div>
-                  <span class="text-[10px] font-bold ${v.status === 2 ? 'text-green-600' : 'text-gray-400'}">${v.status === 2 ? '완료' : '미완'}</span>
+                  <button onclick="setStatus(${v.id}, ${(v.status + 1) % 3})" class="text-[10px] px-2.5 py-1 rounded-full font-bold ${v.status === 2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}">
+                    ${v.status === 2 ? '완료' : '미완'}
+                  </button>
                 </div>
               `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // 4. STATS REPORT TAB
+      else if (currentTab === 'stats') {
+        const memorized = vocabularyDB.filter(v => v.status === 2).length;
+        const rate = Math.round((memorized / vocabularyDB.length) * 100) || 0;
+
+        app.innerHTML = `
+          <div class="space-y-4">
+            <h2 class="text-lg font-bold text-gray-900 px-1">실시간 학습 분석 리포트 📊</h2>
+
+            <div class="ios-card p-5 space-y-3">
+              <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">전체 암기 달성률</p>
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl font-extrabold text-gray-900">${rate}%</span>
+                <span class="text-xs text-gray-400">(${memorized} / ${vocabularyDB.length}개 완료)</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                <div class="bg-[#FFB6C1] h-2 transition-all duration-500" style="width: ${rate}%"></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="ios-card p-4 text-center">
+                <p class="text-[10px] text-gray-400 font-bold uppercase">누적 경험치</p>
+                <p class="text-xl font-extrabold text-amber-500 mt-1">${userStats.xp} XP</p>
+              </div>
+              <div class="ios-card p-4 text-center">
+                <p class="text-[10px] text-gray-400 font-bold uppercase">현재 마스터 레벨</p>
+                <p class="text-xl font-extrabold text-[#FF8DA1] mt-1">Lv. ${userStats.level}</p>
+              </div>
             </div>
           </div>
         `;
@@ -333,117 +379,60 @@
       lucide.createIcons();
     }
 
-    // --- GAME ARCADE LOGIC IMPLEMENTATION ---
-    function startGame(type) {
-      const area = document.getElementById('gamePlayArea');
+    // --- Arcade Game Handlers ---
+    function startChoiceGame() {
       const target = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)];
-
-      // 1. Choice Game
-      if (type === 'choice') {
-        const choices = [target.meaning];
-        while (choices.length < 4) {
-          const rand = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
-          if (!choices.includes(rand)) choices.push(rand);
-        }
-        choices.sort(() => Math.random() - 0.5);
-
-        area.innerHTML = `
-          <div class="ios-card p-5 space-y-4">
-            <div class="text-center">
-              <h3 class="text-2xl font-extrabold text-gray-900">${target.word}</h3>
-            </div>
-            <div class="space-y-2">
-              ${choices.map(c => `
-                <button onclick="checkAnswer('${c}' === '${target.meaning}', 10)" class="w-full text-left p-3.5 rounded-xl border border-gray-100 text-xs font-semibold text-gray-700 hover:bg-[#FFD1DC]/40">${c}</button>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      } 
-      // 2. Typing Game
-      else if (type === 'typing') {
-        area.innerHTML = `
-          <div class="ios-card p-5 space-y-4 text-center">
-            <h3 class="text-xl font-bold text-gray-800">${target.meaning}</h3>
-            <input type="text" id="gameInput" placeholder="스펠링을 적으세요" class="w-full p-3 rounded-xl bg-gray-100 text-xs font-semibold text-center outline-none focus:ring-2 focus:ring-[#FFB6C1]" />
-            <button onclick="checkAnswer(document.getElementById('gameInput').value.trim().toLowerCase() === '${target.word.toLowerCase()}', 20)" class="w-full py-3 rounded-xl ios-btn-pink font-bold text-xs">확인</button>
-          </div>
-        `;
-      } 
-      // 3. OX Game
-      else if (type === 'ox') {
-        const isMatch = Math.random() > 0.5;
-        const displayMeaning = isMatch ? target.meaning : vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
-
-        area.innerHTML = `
-          <div class="ios-card p-5 space-y-5 text-center">
-            <div>
-              <h3 class="text-2xl font-extrabold text-gray-900">${target.word}</h3>
-              <p class="text-sm font-semibold text-gray-500 mt-1">${displayMeaning}</p>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <button onclick="checkAnswer(${isMatch === true}, 10)" class="py-4 rounded-xl bg-blue-50 text-blue-600 font-bold text-lg">⭕ 맞음</button>
-              <button onclick="checkAnswer(${isMatch === false}, 10)" class="py-4 rounded-xl bg-red-50 text-red-600 font-bold text-lg">❌ 틀림</button>
-            </div>
-          </div>
-        `;
+      const choices = [target.meaning];
+      while (choices.length < 4) {
+        const rand = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
+        if (!choices.includes(rand)) choices.push(rand);
       }
-      // 4. Scramble Game
-      else if (type === 'scramble') {
-        const letters = target.word.split('').sort(() => Math.random() - 0.5);
-        area.innerHTML = `
-          <div class="ios-card p-5 space-y-4 text-center">
-            <p class="text-xs text-gray-400 font-semibold">${target.meaning}</p>
-            <div id="scrambleDisplay" class="h-10 border-b-2 border-[#FFB6C1] flex items-center justify-center font-bold text-xl tracking-widest text-gray-800"></div>
-            <div class="flex flex-wrap gap-2 justify-center">
-              ${letters.map(l => `<button onclick="appendLetter('${l}', '${target.word}')" class="w-9 h-9 rounded-xl bg-gray-100 font-bold text-gray-700 active:bg-[#FFB6C1]">${l}</button>`).join('')}
-            </div>
-            <button onclick="startGame('scramble')" class="text-xs text-gray-400 underline mt-2">초기화</button>
+      choices.sort(() => Math.random() - 0.5);
+
+      const area = document.getElementById('gamePlayArea');
+      area.innerHTML = `
+        <div class="ios-card p-5 space-y-4">
+          <h3 class="text-2xl font-extrabold text-center text-gray-900">${target.word}</h3>
+          <div class="space-y-2">
+            ${choices.map(c => `
+              <button onclick="checkGameChoice('${c}', '${target.meaning}', ${target.id})" class="w-full text-left p-3.5 rounded-xl border border-gray-100 text-xs font-semibold text-gray-700 hover:bg-[#FFD1DC]/40">${c}</button>
+            `).join('')}
           </div>
-        `;
-      }
-      // 5. Matching Game
-      else if (type === 'match') {
-        area.innerHTML = `
-          <div class="ios-card p-5 text-center space-y-3">
-            <p class="text-xs font-bold text-[#FF8DA1]">짝을 맞추어 지워주세요!</p>
-            <div class="grid grid-cols-2 gap-2 text-xs font-bold">
-              <button onclick="this.remove()" class="p-3 bg-gray-50 rounded-xl border">${target.word}</button>
-              <button onclick="this.remove()" class="p-3 bg-gray-50 rounded-xl border">${target.meaning}</button>
-            </div>
-            <button onclick="addXP(25); alert('매칭 성공! +25XP'); startGame('match');" class="mt-2 text-xs font-bold text-green-600">완료 시 터치</button>
-          </div>
-        `;
-      }
+        </div>
+      `;
     }
 
-    let currentScramble = "";
-    function appendLetter(letter, correctWord) {
-      currentScramble += letter;
-      document.getElementById('scrambleDisplay').innerText = currentScramble;
-      if (currentScramble.length === correctWord.length) {
-        if (currentScramble.toLowerCase() === correctWord.toLowerCase()) {
-          checkAnswer(true, 15);
-        } else {
-          checkAnswer(false, 0);
-        }
-        currentScramble = "";
-      }
-    }
-
-    function checkAnswer(isCorrect, xp) {
-      if (isCorrect) {
-        addXP(xp);
-        alert(`🎉 정답! +${xp}XP 획득`);
+    function checkGameChoice(selected, correct, id) {
+      if (selected === correct) {
+        alert("🎉 정답입니다! (+10XP)");
+        setStatus(id, 2);
       } else {
-        alert("❌ 아쉽네요! 다시 도전해 보세요.");
+        alert(`❌ 틀렸습니다. 정답: ${correct}`);
       }
-      startGame('choice');
+      startChoiceGame();
     }
 
-    function nextCard() {
-      cardIndex = (cardIndex + 1) % vocabularyDB.length;
-      render();
+    function startTypingGame() {
+      const target = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)];
+      const area = document.getElementById('gamePlayArea');
+      area.innerHTML = `
+        <div class="ios-card p-5 space-y-4 text-center">
+          <h3 class="text-xl font-bold text-gray-800">${target.meaning}</h3>
+          <input type="text" id="typeAnswer" placeholder="스펠링 입력" class="w-full p-3 rounded-xl bg-gray-100 text-xs font-semibold text-center outline-none focus:ring-2 focus:ring-[#FFB6C1]" />
+          <button onclick="checkTypingGame('${target.word}', ${target.id})" class="w-full py-3 rounded-xl ios-btn-pink font-bold text-xs">확인</button>
+        </div>
+      `;
+    }
+
+    function checkTypingGame(correct, id) {
+      const val = document.getElementById('typeAnswer').value.trim().toLowerCase();
+      if (val === correct.toLowerCase()) {
+        alert("🎉 정답입니다! (+20XP)");
+        setStatus(id, 2);
+      } else {
+        alert(`❌ 틀렸습니다. 정답: ${correct}`);
+      }
+      startTypingGame();
     }
 
     render();
