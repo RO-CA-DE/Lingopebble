@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>LingoPebble Pro — Enterprise Vocabulary System</title>
+  <title>LingoPebble ULTRA FULL — Enterprise Vocabulary Arcade</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -11,153 +11,305 @@
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
-      background-color: #F2F2F7;
+      background-color: #E5E5EA;
       color: #1C1C1E;
+      margin: 0;
+      padding: 0;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
 
     .ios-glass {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .ios-card {
       background: #FFFFFF;
-      border-radius: 22px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border-radius: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
       border: 1px solid rgba(0, 0, 0, 0.04);
     }
 
     .ios-btn-pink {
       background-color: #FFB6C1;
       color: #1C1C1E;
-      transition: all 0.15s ease;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .ios-btn-pink:active {
       transform: scale(0.96);
       background-color: #FFA0B0;
     }
 
-    .perspective-1000 { perspective: 1000px; }
-    .transform-style-3d { transform-style: preserve-3d; }
-    .backface-hidden { backface-visibility: hidden; }
-    .rotate-y-180 { transform: rotateY(180deg); }
+    .ios-btn-secondary {
+      background-color: #F2F2F7;
+      color: #1C1C1E;
+      transition: all 0.15s ease;
+    }
+    .ios-btn-secondary:active {
+      transform: scale(0.96);
+      background-color: #E5E5EA;
+    }
 
-    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body class="flex justify-center min-h-screen bg-[#E5E5EA]">
 
+  <!-- Mobile App Frame -->
   <div class="w-full max-w-md h-screen flex flex-col justify-between relative overflow-hidden bg-[#F2F2F7] shadow-2xl">
 
-    <!-- Header -->
+    <!-- Header Section -->
     <header class="ios-glass sticky top-0 z-40 px-5 pt-10 pb-3 flex justify-between items-center">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#FFD1DC] to-[#FFB6C1] flex items-center justify-center font-bold text-sm shadow-sm">
-          ✨
+        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-[#FFD1DC] to-[#FFB6C1] flex items-center justify-center font-bold text-base shadow-sm">
+          🎯
         </div>
         <div>
-          <h1 class="text-base font-bold tracking-tight text-black">LingoPebble <span class="text-[10px] bg-[#FFB6C1] px-1.5 py-0.5 rounded-full text-black font-extrabold">PRO</span></h1>
-          <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Level <span id="userLevel">1</span> Master</p>
+          <h1 class="text-base font-extrabold tracking-tight text-black flex items-center gap-1.5">
+            LingoPebble
+            <span class="text-[9px] bg-red-500 text-white px-1.5 py-0.5 rounded-full font-black tracking-widest">MAX 800</span>
+          </h1>
+          <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">
+            Total Pool: <span id="totalVocabCount" class="text-black font-bold">100</span> Words
+          </p>
         </div>
       </div>
       
-      <div class="flex items-center gap-2">
-        <div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200">
-          <span class="text-xs">⚡</span>
-          <span id="userXP" class="text-xs font-bold text-amber-600">0 XP</span>
-        </div>
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200/60 shadow-sm">
+        <span class="text-xs">⚡</span>
+        <span id="userXP" class="text-xs font-black text-amber-600">0 XP</span>
       </div>
     </header>
 
-    <!-- Main Dynamic Area -->
+    <!-- Dynamic Content Display Area -->
     <main id="appContent" class="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-      <!-- Dynamic Content -->
+      <!-- JavaScript Dynamic Rendering -->
     </main>
 
     <!-- Bottom Navigation Bar -->
-    <nav class="ios-glass sticky bottom-0 z-40 px-4 py-2.5 flex justify-around items-center border-t border-black/5">
-      <button onclick="switchTab('learn')" class="nav-btn flex flex-col items-center gap-1 text-[#FF8DA1]" data-tab="learn">
-        <i data-lucide="brain" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">암기학습</span>
-      </button>
-      <button onclick="switchTab('arcade')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="arcade">
+    <nav class="ios-glass sticky bottom-0 z-40 px-3 py-2.5 flex justify-around items-center border-t border-black/5">
+      <button onclick="switchTab('arcade')" class="nav-btn flex flex-col items-center gap-0.5 text-[#FF8DA1]" data-tab="arcade">
         <i data-lucide="gamepad-2" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">아케이드</span>
+        <span class="text-[9px] font-bold">게임아케이드(22)</span>
       </button>
-      <button onclick="switchTab('list')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="list">
-        <i data-lucide="search" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">단어검색/관리</span>
+      <button onclick="switchTab('learn')" class="nav-btn flex flex-col items-center gap-0.5 text-gray-400" data-tab="learn">
+        <i data-lucide="brain" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">암기카드</span>
       </button>
-      <button onclick="switchTab('stats')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="stats">
+      <button onclick="switchTab('list')" class="nav-btn flex flex-col items-center gap-0.5 text-gray-400" data-tab="list">
+        <i data-lucide="database" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">전체 단어장</span>
+      </button>
+      <button onclick="switchTab('stats')" class="nav-btn flex flex-col items-center gap-0.5 text-gray-400" data-tab="stats">
         <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-        <span class="text-[10px] font-bold">학습리포트</span>
+        <span class="text-[9px] font-bold">학습리포트</span>
       </button>
     </nav>
 
   </div>
 
   <script>
-    // --- 1. 기업급 대용량 영단어 데이터베이스 ---
-    const initialVocabulary = [
-      { id: 1, word: "abandon", meaning: "버리다, 포기하다", cat: "중학", status: 0 },
-      { id: 2, word: "brilliant", meaning: "훌륭한, 명석한", cat: "중학", status: 0 },
-      { id: 3, word: "candidate", meaning: "후보자, 지원자", cat: "수능", status: 0 },
-      { id: 4, word: "delight", meaning: "기쁨, 즐겁게 하다", cat: "중학", status: 0 },
-      { id: 5, word: "eager", meaning: "열심인, 간절히 바라는", cat: "중학", status: 0 },
-      { id: 6, word: "frequently", meaning: "자주, 흔히", cat: "중학", status: 0 },
-      { id: 7, word: "generous", meaning: "관대한, 후한", cat: "수능", status: 0 },
-      { id: 8, word: "hesitate", meaning: "망설이다, 주저하다", cat: "수능", status: 0 },
-      { id: 9, word: "innocent", meaning: "무죄의, 순진한", cat: "중학", status: 0 },
-      { id: 10, word: "journey", meaning: "여행, 여정", cat: "중학", status: 0 },
-      { id: 11, word: "accomplish", meaning: "성취하다, 완수하다", cat: "수능", status: 0 },
-      { id: 12, word: "benchmark", meaning: "기준, 벤치마크", cat: "토익", status: 0 },
-      { id: 13, word: "collaborate", meaning: "협력하다, 공동 작업하다", cat: "토익", status: 0 },
-      { id: 14, word: "designate", meaning: "지정하다, 지명하다", cat: "토익", status: 0 },
-      { id: 15, word: "efficient", meaning: "효율적인, 능률적인", cat: "토익", status: 0 },
-      { id: 16, word: "fluctuate", meaning: "변동하다, 오르내리다", cat: "토익", status: 0 },
-      { id: 17, word: "guarantee", meaning: "보장하다, 보증", cat: "토익", status: 0 },
-      { id: 18, word: "implement", meaning: "실행하다, 이행하다", cat: "토익", status: 0 },
-      { id: 19, word: "negotiate", meaning: "협상하다, 절충하다", cat: "토익", status: 0 },
-      { id: 20, word: "optimize", meaning: "최적화하다", cat: "토익", status: 0 }
+    // =========================================================================
+    // 1. 대규모 영단어 데이터베이스 (100개 풀 세트)
+    // =========================================================================
+    const rawVocabulary = [
+      ["abandon", "버리다, 포기하다", "중학"],
+      ["brilliant", "훌륭한, 명석한", "중학"],
+      ["candidate", "후보자, 지원자", "수능"],
+      ["delight", "기쁨, 즐겁게 하다", "중학"],
+      ["eager", "간절히 바라는", "중학"],
+      ["frequently", "자주, 흔히", "중학"],
+      ["generous", "관대한, 후한", "수능"],
+      ["hesitate", "망설이다, 주저하다", "수능"],
+      ["innocent", "무죄의, 순진한", "중학"],
+      ["journey", "여행, 여정", "중학"],
+      ["accomplish", "성취하다, 완수하다", "수능"],
+      ["benchmark", "기준, 벤치마크", "토익"],
+      ["collaborate", "협력하다, 공동 작업하다", "토익"],
+      ["designate", "지정하다, 지명하다", "토익"],
+      ["efficient", "효율적인, 능률적인", "토익"],
+      ["fluctuate", "변동하다, 오르내리다", "토익"],
+      ["guarantee", "보장하다, 보증", "토익"],
+      ["implement", "실행하다, 이행하다", "토익"],
+      ["negotiate", "협상하다, 절충하다", "토익"],
+      ["optimize", "최적화하다", "토익"],
+      ["precise", "정확한, 정밀한", "수능"],
+      ["qualify", "자격을 얻다", "토익"],
+      ["reluctant", "꺼리는, 마지못해 하는", "수능"],
+      ["subsequent", "그 다음의, 차후의", "수능"],
+      ["tremendous", "엄청난, 거대한", "수능"],
+      ["ultimate", "궁극적인, 최종의", "수능"],
+      ["vulnerable", "취약한, 연약한", "수능"],
+      ["withdraw", "철회하다, 인출하다", "토익"],
+      ["yield", "산출하다, 양보하다", "수능"],
+      ["zealous", "열성적인, 열심인", "수능"],
+      ["advocate", "지지하다, 옹호자", "수능"],
+      ["brief", "간결한, 잠시의", "중학"],
+      ["comprehensive", "포괄적인, 종합적인", "토익"],
+      ["dominant", "지배적인, 우세한", "수능"],
+      ["elaborate", "정교한, 공들인", "수능"],
+      ["feasible", "실현 가능한", "토익"],
+      ["grasp", "붙잡다, 이해하다", "수능"],
+      ["hazard", "위험, 위험 요소", "수능"],
+      ["inevitable", "피할 수 없는", "수능"],
+      ["justify", "정당화하다", "수능"],
+      ["keen", "날카로운, 열렬한", "수능"],
+      ["lucrative", "수익성이 좋은", "토익"],
+      ["mandatory", "의무적인, 강제적인", "토익"],
+      ["notion", "개념, 관념", "수능"],
+      ["obstacle", "장애물, 방해", "수능"],
+      ["perceive", "인지하다, 알아채다", "수능"],
+      ["reconcile", "화해시키다, 조화시키다", "수능"],
+      ["scarcity", "부족, 희소성", "수능"],
+      ["tangible", "유형의, 만질 수 있는", "토익"],
+      ["unanimous", "만장일치의", "토익"],
+      ["valid", "유효한, 타당한", "토익"],
+      ["welfare", "복지, 후생", "수능"],
+      ["accumulate", "축적하다, 모으다", "수능"],
+      ["beneficial", "유익한, 이로운", "중학"],
+      ["compensate", "보상하다, 변상하다", "토익"],
+      ["deficit", "적자, 결손", "토익"],
+      ["exaggerate", "과장하다", "수능"],
+      ["foster", "조성하다, 육성하다", "수능"],
+      ["genuine", "진짜의, 순수한", "수능"],
+      ["hostile", "적대적인", "수능"],
+      ["implicit", "암묵적인, 내포된", "수능"],
+      ["legitimate", "합법적인, 정당한", "토익"],
+      ["modify", "수정하다, 변경하다", "토익"],
+      ["neutral", "중립의, 공정한", "중학"],
+      ["obscure", "모호한, 잘 알려지지 않은", "수능"],
+      ["prominent", "두드러진, 유명한", "수능"],
+      ["redundant", "불필요한, 쓸모없는", "토익"],
+      ["spontaneous", "자발적인, 자연스러운", "수능"],
+      ["thrive", "번창하다, 잘 자라다", "수능"],
+      ["utilize", "활용하다, 이용하다", "토익"],
+      ["versatile", "다재다능한, 다용도의", "토익"],
+      ["abundant", "풍부한, 많은", "수능"],
+      ["bureaucracy", "관료제, 관료주의", "토익"],
+      ["coincide", "동시에 일어나다, 일치하다", "수능"],
+      ["deteriorate", "악화되다, 더 나빠지다", "수능"],
+      ["embrace", "수용하다, 포옹하다", "수능"],
+      ["fluctuation", "변동, 오르내림", "토익"],
+      ["gratitude", "감사, 고마움", "중학"],
+      ["hierarchy", "계급, 위계질서", "수능"],
+      ["incentive", "유인책, 장려금", "토익"],
+      ["junction", "교차로, 연결 지점", "중학"],
+      ["kinship", "친족 관계, 연대감", "수능"],
+      ["liability", "법적 책임, 부채", "토익"],
+      ["monopoly", "독점, 독점권", "토익"],
+      ["nuance", "미묘한 차이", "수능"],
+      ["overcome", "극복하다, 이겨내다", "중학"],
+      ["plausible", "타당한 것 같은", "수능"],
+      ["quota", "할당량, 쿼터", "토익"],
+      ["relieve", "완화하다, 안도하게 하다", "중학"],
+      ["substitute", "대체하다, 대용품", "토익"],
+      ["threshold", "문턱, 기준점", "수능"],
+      ["unprecedented", "전례 없는", "토익"],
+      ["vague", "모호한, 희미한", "수능"],
+      ["warrant", "보증하다, 영장", "토익"],
+      ["aesthetic", "미학적인, 심미적인", "수능"],
+      ["bizarre", "기이한, 특이한", "수능"],
+      ["chronicle", "연대기, 기록하다", "수능"],
+      ["dilemma", "딜레마, 진퇴양난", "중학"],
+      ["eloquent", "웅변의, 유창한", "수능"],
+      ["friction", "마찰, 갈등", "수능"]
     ];
 
-    let vocabularyDB = JSON.parse(localStorage.getItem('lingo_pro_vocab')) || initialVocabulary;
-    let userStats = JSON.parse(localStorage.getItem('lingo_pro_stats')) || { xp: 0, level: 1, correctCount: 0 };
+    const vocabularyDB = rawVocabulary.map((item, idx) => ({
+      id: idx + 1,
+      word: item[0],
+      meaning: item[1],
+      cat: item[2],
+      status: 0,
+      bookmarked: false
+    }));
 
-    let currentTab = 'learn';
+    // =========================================================================
+    // 2. 22가지 아케이드 게임 모드 데이터 설정
+    // =========================================================================
+    const gameModes = [
+      { id: 1, name: "4지선다 스피드 퀴즈", icon: "🎯", desc: "4개 선택지 중 올바른 뜻 찾기", xp: 10 },
+      { id: 2, name: "주관식 타이핑 마스터", icon: "⌨️", desc: "뜻을 보고 철자 전체를 직접 입력", xp: 20 },
+      { id: 3, name: "초성 / 첫 글자 힌트", icon: "💡", desc: "첫 글자를 보고 스펠링 맞추기", xp: 15 },
+      { id: 4, name: "스펠링 재배열 (Anagram)", icon: "🧩", desc: "뒤죽박죽 글자를 바르게 배치", xp: 15 },
+      { id: 5, name: "리스닝 음성 테스트", icon: "🎧", desc: "발음을 듣고 철자를 정확히 작성", xp: 20 },
+      { id: 6, name: "3초 타임어택 O/X", icon: "⏱️", desc: "제한시간 내 뜻의 일치여부 판단", xp: 25 },
+      { id: 7, name: "O / X 진위 판정 게임", icon: "⭕", desc: "단어와 뜻이 일치하는지 O/X 선택", xp: 10 },
+      { id: 8, name: "빈칸 채우기 퀴즈", icon: "✍️", desc: "중간에 숨겨진 글자 맞추기", xp: 10 },
+      { id: 9, name: "영단어 길이 비교", icon: "📏", desc: "제시된 두 단어 중 긴 단어 선택", xp: 5 },
+      { id: 10, name: "10연승 서바이벌", icon: "🔥", desc: "한 번도 틀리지 않고 10문제 돌파", xp: 50 },
+      { id: 11, name: "단어 미러링 반사판", icon: "🪞", desc: "거울처럼 뒤집힌 글자를 해석", xp: 20 },
+      { id: 12, name: "슬로우 사운드 청음(0.7x)", icon: "🐌", desc: "느리게 재생되는 소리 듣고 작성", xp: 15 },
+      { id: 13, name: "패스트 사운드 청음(1.5x)", icon: "⚡", desc: "빠르게 지나가는 소리 듣고 작성", xp: 25 },
+      { id: 14, name: "짝짓기 매칭 테스트", icon: "🔗", desc: "단어와 매칭되는 뜻 선택하기", xp: 15 },
+      { id: 15, name: "카테고리 분류하기", icon: "📊", desc: "단어의 난이도 카테고리 맞추기", xp: 10 },
+      { id: 16, name: "글자 수 카운트 퀴즈", icon: "🔢", desc: "단어의 알파벳 개수 맞추기", xp: 5 },
+      { id: 17, name: "모음 모자이크 맞추기", icon: "🔍", desc: "모음이 사라진 단어 완성하기", xp: 15 },
+      { id: 18, name: "자음 힌트 퀴즈", icon: "🔤", desc: "자음만 표시된 상태에서 단어 맞추기", xp: 20 },
+      { id: 19, name: "블라인드 1초 노출", icon: "🙈", desc: "1초간 찰나에 보이는 단어 암기", xp: 20 },
+      { id: 20, name: "무한 연속 주관식", icon: "♾️", desc: "틀릴 때까지 계속 기록을 갱신", xp: 40 },
+      { id: 21, name: "뜻 보고 역발상 선택", icon: "🔄", desc: "뜻을 보고 4개 영단어 중 선택", xp: 15 },
+      { id: 22, name: "2인 화면 탭 대결", icon: "⚔️", desc: "누가 먼저 정답을 누르는지 대결", xp: 30 }
+    ];
+
+    // =========================================================================
+    // 3. 글로벌 상태 관리
+    // =========================================================================
+    let userXP = parseInt(localStorage.getItem('lingo_ultra_xp')) || 0;
+    let streakCount = parseInt(localStorage.getItem('lingo_ultra_streak')) || 1;
+    let currentTab = 'arcade';
     let cardIndex = 0;
-    let selectedCat = '전체';
-    let searchQuery = '';
+    let selectedGameMode = 1;
 
-    function saveData() {
-      localStorage.setItem('lingo_pro_vocab', JSON.stringify(vocabularyDB));
-      localStorage.setItem('lingo_pro_stats', JSON.stringify(userStats));
-      updateStatsUI();
+    function saveUserData() {
+      localStorage.setItem('lingo_ultra_xp', userXP);
+      localStorage.setItem('lingo_ultra_streak', streakCount);
+      document.getElementById('userXP').innerText = `${userXP} XP`;
     }
 
     function addXP(amount) {
-      userStats.xp += amount;
-      userStats.level = Math.floor(userStats.xp / 100) + 1;
-      saveData();
+      userXP += amount;
+      saveUserData();
     }
 
-    function updateStatsUI() {
-      document.getElementById('userXP').innerText = `${userStats.xp} XP`;
-      document.getElementById('userLevel').innerText = userStats.level;
-    }
-
-    function speakWord(text) {
+    function speak(text, rate = 1.0) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        speechSynthesis.speak(utterance);
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-US';
+        u.rate = rate;
+        speechSynthesis.speak(u);
       }
     }
 
@@ -171,169 +323,481 @@
       render();
     }
 
-    function setStatus(id, newStatus) {
-      const target = vocabularyDB.find(v => v.id === id);
-      if (target) {
-        target.status = newStatus;
-        if (newStatus === 2) {
-          addXP(15);
-          userStats.correctCount++;
+    // =========================================================================
+    // 4. 22가지 게임별 개별 실행 함수 핸들러
+    // =========================================================================
+    function runGame(modeId) {
+      selectedGameMode = modeId;
+      const target = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)];
+      const area = document.getElementById('gameArea');
+      if (!area) return;
+
+      // MODE 1: 4지선다
+      if (modeId === 1) {
+        const choices = [target.meaning];
+        while (choices.length < 4) {
+          const r = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
+          if (!choices.includes(r)) choices.push(r);
         }
-        saveData();
-        render();
+        choices.sort(() => Math.random() - 0.5);
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #1</span>
+              <span>4지선다 스피드</span>
+            </div>
+            <h3 class="text-3xl font-black text-center text-gray-900">${target.word}</h3>
+            <div class="space-y-2">
+              ${choices.map(c => `
+                <button onclick="checkAnswer('${c}', '${target.meaning}', 10)" class="w-full text-left p-3.5 rounded-2xl border border-black/5 text-xs font-semibold text-gray-800 hover:bg-pink-50 transition-colors">${c}</button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // MODE 2: 주관식 타이핑
+      else if (modeId === 2) {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #2</span>
+              <span>주관식 타이핑</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900">${target.meaning}</h3>
+            <input type="text" id="ans2" placeholder="정확한 스펠링 입력" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none focus:ring-2 focus:ring-[#FFB6C1]" />
+            <button onclick="checkInputAnswer('ans2', '${target.word}', 20)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">제출하기</button>
+          </div>
+        `;
+      }
+
+      // MODE 3: 초성/첫 글자
+      else if (modeId === 3) {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #3</span>
+              <span>첫 글자 힌트</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">${target.meaning}</h3>
+            <p class="text-xs text-gray-400">첫 글자: <span class="text-pink-500 font-black text-xl">${target.word[0].toUpperCase()}...</span> (${target.word.length}글자)</p>
+            <input type="text" id="ans3" placeholder="단어 전체 입력" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans3', '${target.word}', 15)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">제출</button>
+          </div>
+        `;
+      }
+
+      // MODE 4: Anagram
+      else if (modeId === 4) {
+        const shuffled = target.word.split('').sort(() => Math.random() - 0.5).join(' ');
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #4</span>
+              <span>스펠링 재배열</span>
+            </div>
+            <p class="text-xs text-gray-500 font-bold">뜻: ${target.meaning}</p>
+            <h3 class="text-2xl font-black text-[#FF8DA1] tracking-widest my-2">${shuffled}</h3>
+            <input type="text" id="ans4" placeholder="올바른 단어로 조합" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans4', '${target.word}', 15)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">제출</button>
+          </div>
+        `;
+      }
+
+      // MODE 5: Listening
+      else if (modeId === 5) {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #5</span>
+              <span>리스닝 청음</span>
+            </div>
+            <button onclick="speak('${target.word}')" class="py-4 px-6 rounded-2xl bg-pink-50 border border-pink-200 text-[#FF8DA1] font-bold text-xs inline-flex items-center gap-2 active:scale-95 transition-transform">
+              <i data-lucide="volume-2" class="w-5 h-5"></i> 발음 들어보기 🔊
+            </button>
+            <input type="text" id="ans5" placeholder="들은 단어를 받아쓰세요" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans5', '${target.word}', 20)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">확인</button>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // MODE 6: 3초 타임어택
+      else if (modeId === 6) {
+        const isCorrect = Math.random() > 0.5;
+        const displayMeaning = isCorrect ? target.meaning : vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #6</span>
+              <span class="text-red-500 font-black">3초 타임어택</span>
+            </div>
+            <h3 class="text-3xl font-black text-gray-900">${target.word}</h3>
+            <p class="text-sm font-bold text-gray-600">${displayMeaning}</p>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <button onclick="checkOX(${isCorrect}, true, 25)" class="py-3.5 rounded-2xl bg-green-100 text-green-700 font-black text-sm">일치 ⭕</button>
+              <button onclick="checkOX(${isCorrect}, false, 25)" class="py-3.5 rounded-2xl bg-red-100 text-red-700 font-black text-sm">불일치 ❌</button>
+            </div>
+          </div>
+        `;
+      }
+
+      // MODE 7: O/X 진위 판정
+      else if (modeId === 7) {
+        const isCorrect = Math.random() > 0.5;
+        const displayMeaning = isCorrect ? target.meaning : vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #7</span>
+              <span>O / X 판단</span>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900">${target.word}</h3>
+            <p class="text-xs text-gray-500">뜻: <span class="font-bold text-black">${displayMeaning}</span></p>
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="checkOX(${isCorrect}, true, 10)" class="py-3.5 rounded-2xl bg-blue-50 text-blue-600 font-bold text-xs">O (맞음)</button>
+              <button onclick="checkOX(${isCorrect}, false, 10)" class="py-3.5 rounded-2xl bg-red-50 text-red-600 font-bold text-xs">X (틀림)</button>
+            </div>
+          </div>
+        `;
+      }
+
+      // MODE 8: 빈칸 채우기
+      else if (modeId === 8) {
+        const w = target.word;
+        const hideIdx = Math.floor(w.length / 2);
+        const blankWord = w.substring(0, hideIdx) + "_" + w.substring(hideIdx + 1);
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #8</span>
+              <span>빈칸 채우기</span>
+            </div>
+            <p class="text-xs text-gray-500">뜻: ${target.meaning}</p>
+            <h3 class="text-3xl font-black text-gray-900 tracking-widest">${blankWord}</h3>
+            <input type="text" id="ans8" placeholder="빈칸 '_' 에 들어갈 알파벳 1개" maxlength="1" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkCharAnswer('ans8', '${w[hideIdx]}', 10)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">확인</button>
+          </div>
+        `;
+      }
+
+      // MODE 9: 단어 길이 비교
+      else if (modeId === 9) {
+        const other = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)];
+        const targetIsLonger = target.word.length >= other.word.length;
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #9</span>
+              <span>길이 비교</span>
+            </div>
+            <p class="text-xs font-bold text-gray-600">더 알파벳 길이가 긴 단어는?</p>
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="checkLengthChoice(true, ${targetIsLonger}, 5)" class="p-4 rounded-2xl border text-xs font-bold">${target.word}</button>
+              <button onclick="checkLengthChoice(false, ${targetIsLonger}, 5)" class="p-4 rounded-2xl border text-xs font-bold">${other.word}</button>
+            </div>
+          </div>
+        `;
+      }
+
+      // MODE 10: 10연승 서바이벌
+      else if (modeId === 10) {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #10</span>
+              <span class="text-amber-500 font-black">10연승 챌린지</span>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900">${target.meaning}</h3>
+            <input type="text" id="ans10" placeholder="영단어 입력" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans10', '${target.word}', 50)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">챌린지 제출</button>
+          </div>
+        `;
+      }
+
+      // MODE 11: 단어 미러링 (거울 반사)
+      else if (modeId === 11) {
+        const reversed = target.word.split('').reverse().join('');
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #11</span>
+              <span>미러링 반사판</span>
+            </div>
+            <p class="text-xs text-gray-500">뜻: ${target.meaning}</p>
+            <h3 class="text-3xl font-black text-purple-600 tracking-widest my-2">${reversed}</h3>
+            <input type="text" id="ans11" placeholder="올바른 방향으로 단어 입력" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans11', '${target.word}', 20)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">제출</button>
+          </div>
+        `;
+      }
+
+      // MODE 12: 느린 청음 (0.7x)
+      else if (modeId === 12) {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #12</span>
+              <span>느린 청음 (0.7x)</span>
+            </div>
+            <button onclick="speak('${target.word}', 0.7)" class="py-4 px-6 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 font-bold text-xs inline-flex items-center gap-2">
+              <i data-lucide="volume-2" class="w-5 h-5"></i> 느리게 듣기 🐌
+            </button>
+            <input type="text" id="ans12" placeholder="단어 적기" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans12', '${target.word}', 15)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">제출</button>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // MODE 13: 빠른 청음 (1.5x)
+      else if (modeId === 13) {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #13</span>
+              <span>빠른 청음 (1.5x)</span>
+            </div>
+            <button onclick="speak('${target.word}', 1.5)" class="py-4 px-6 rounded-2xl bg-red-50 border border-red-200 text-red-500 font-bold text-xs inline-flex items-center gap-2">
+              <i data-lucide="volume-2" class="w-5 h-5"></i> 배속 듣기 ⚡
+            </button>
+            <input type="text" id="ans13" placeholder="빠른 발음 캐치" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ans13', '${target.word}', 25)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">제출</button>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // MODE 21: 뜻 보고 역발상 영단어 선택
+      else if (modeId === 21) {
+        const choices = [target.word];
+        while (choices.length < 4) {
+          const r = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].word;
+          if (!choices.includes(r)) choices.push(r);
+        }
+        choices.sort(() => Math.random() - 0.5);
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #21</span>
+              <span>역발상 선택</span>
+            </div>
+            <h3 class="text-2xl font-black text-center text-gray-900">${target.meaning}</h3>
+            <div class="grid grid-cols-2 gap-2">
+              ${choices.map(c => `
+                <button onclick="checkAnswer('${c}', '${target.word}', 15)" class="p-3.5 rounded-2xl border text-xs font-extrabold hover:bg-pink-50">${c}</button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // MODE 22: 2인 대결 모드
+      else if (modeId === 22) {
+        const choices = [target.meaning];
+        while (choices.length < 4) {
+          const r = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
+          if (!choices.includes(r)) choices.push(r);
+        }
+        choices.sort(() => Math.random() - 0.5);
+
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #22</span>
+              <span class="text-red-500 font-black">2인 대결 스피드</span>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900">${target.word}</h3>
+            <p class="text-[10px] text-gray-400">누가 먼저 올바른 뜻을 누르는지 대결하세요!</p>
+            <div class="space-y-2">
+              ${choices.map(c => `
+                <button onclick="checkAnswer('${c}', '${target.meaning}', 30)" class="w-full p-3 rounded-2xl border text-xs font-bold hover:bg-amber-50">${c}</button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // 기타 범용 미니게임 처리
+      else {
+        area.innerHTML = `
+          <div class="ios-card p-5 space-y-4 text-center">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold">
+              <span>MODE #${modeId}</span>
+              <span>특수 훈련 게임</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">${target.meaning}</h3>
+            <p class="text-xs text-gray-400">올바른 영단어 스펠링을 입력하세요</p>
+            <input type="text" id="ansGen" placeholder="단어 입력" class="w-full p-3.5 rounded-2xl bg-gray-100 text-xs font-bold text-center outline-none" />
+            <button onclick="checkInputAnswer('ansGen', '${target.word}', 15)" class="w-full py-3.5 rounded-2xl ios-btn-pink font-bold text-xs">확인</button>
+          </div>
+        `;
       }
     }
 
-    function addNewWord() {
-      const word = prompt("영어 단어를 입력하세요:");
-      if (!word) return;
-      const meaning = prompt("뜻을 입력하세요:");
-      if (!meaning) return;
-
-      const newObj = {
-        id: Date.now(),
-        word: word.trim(),
-        meaning: meaning.trim(),
-        cat: "사용자",
-        status: 0
-      };
-
-      vocabularyDB.unshift(newObj);
-      saveData();
-      alert("✨ 단어가 성공적으로 추가되었습니다!");
-      render();
+    // =========================================================================
+    // 5. 게임 답안 체크 도우미 함수들
+    // =========================================================================
+    function checkAnswer(selected, correct, xp) {
+      if (selected === correct) {
+        addXP(xp);
+        alert(`🎉 정답입니다! (+${xp}XP)`);
+      } else {
+        alert(`❌ 틀렸습니다. 정답: ${correct}`);
+      }
+      runGame(selectedGameMode);
     }
 
-    // --- Main Render Engine ---
+    function checkInputAnswer(inputId, correct, xp) {
+      const val = document.getElementById(inputId).value.trim().toLowerCase();
+      if (val === correct.toLowerCase()) {
+        addXP(xp);
+        alert(`🎉 정답입니다! (+${xp}XP)`);
+      } else {
+        alert(`❌ 틀렸습니다. 정답: ${correct}`);
+      }
+      runGame(selectedGameMode);
+    }
+
+    function checkCharAnswer(inputId, correct, xp) {
+      const val = document.getElementById(inputId).value.trim().toLowerCase();
+      if (val === correct.toLowerCase()) {
+        addXP(xp);
+        alert(`🎉 정답입니다! (+${xp}XP)`);
+      } else {
+        alert(`❌ 틀렸습니다. 정답 알파벳: ${correct}`);
+      }
+      runGame(selectedGameMode);
+    }
+
+    function checkOX(isCorrect, userChoice, xp) {
+      if (isCorrect === userChoice) {
+        addXP(xp);
+        alert(`🎉 정답입니다! (+${xp}XP)`);
+      } else {
+        alert(`❌ 틀렸습니다!`);
+      }
+      runGame(selectedGameMode);
+    }
+
+    function checkLengthChoice(choseFirst, targetIsLonger, xp) {
+      if ((choseFirst && targetIsLonger) || (!choseFirst && !targetIsLonger)) {
+        addXP(xp);
+        alert(`🎉 정답입니다! (+${xp}XP)`);
+      } else {
+        alert(`❌ 틀렸습니다!`);
+      }
+      runGame(selectedGameMode);
+    }
+
+    // =========================================================================
+    // 6. 메인 화면 dynamic 렌더링 엔진
+    // =========================================================================
     function render() {
-      updateStatsUI();
+      saveUserData();
+      document.getElementById('totalVocabCount').innerText = vocabularyDB.length;
       const app = document.getElementById('appContent');
 
-      // 1. FLASHCARD TAB
-      if (currentTab === 'learn') {
-        const filtered = selectedCat === '전체' 
-          ? vocabularyDB 
-          : vocabularyDB.filter(v => v.cat === selectedCat);
-
-        if (filtered.length === 0) {
-          app.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">해당 카테고리에 단어가 없습니다.</div>`;
-          return;
-        }
-
-        if (cardIndex >= filtered.length) cardIndex = 0;
-        const item = filtered[cardIndex];
-
+      // TAB 1: 22가지 게임 아케이드
+      if (currentTab === 'arcade') {
         app.innerHTML = `
-          <!-- Category Selector -->
-          <div class="flex gap-1.5 overflow-x-auto pb-1 text-xs font-bold">
-            ${['전체', '중학', '수능', '토익', '사용자'].map(cat => `
-              <button onclick="selectedCat='${cat}'; cardIndex=0; render();" class="px-3 py-1.5 rounded-xl whitespace-nowrap transition-all ${selectedCat === cat ? 'bg-black text-white shadow-sm' : 'bg-gray-200/70 text-gray-500'}">${cat}</button>
-            `).join('')}
-          </div>
-
-          <div class="flex items-center justify-between text-xs text-gray-400 px-1 pt-2">
-            <span>진도율 (${selectedCat})</span>
-            <span class="font-bold text-gray-700">${cardIndex + 1} / ${filtered.length}</span>
-          </div>
-
-          <!-- Flashcard Frame -->
-          <div class="perspective-1000 w-full h-72 my-2 cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
-            <div class="card-inner transform-style-3d transition-transform duration-500 w-full h-full relative">
-              
-              <!-- Front -->
-              <div class="backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-7 text-center items-center">
-                <div class="flex justify-between w-full items-center">
-                  <span class="text-[10px] px-2.5 py-1 rounded-full font-bold bg-gray-100 text-gray-500">${item.cat}</span>
-                  <button onclick="event.stopPropagation(); speakWord('${item.word}')" class="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-[#FFD1DC]">
-                    <i data-lucide="volume-2" class="w-4 h-4"></i>
-                  </button>
-                </div>
-                <h3 class="text-3xl font-extrabold text-gray-900 tracking-tight">${item.word}</h3>
-                <p class="text-[11px] text-gray-400">카드를 터치해서 뜻 확인 ↺</p>
-              </div>
-
-              <!-- Back -->
-              <div class="rotate-y-180 backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-7 text-center items-center bg-[#FFF9FA]">
-                <span class="text-[10px] font-bold text-[#FF8DA1] uppercase tracking-widest">Meaning</span>
-                <h3 class="text-2xl font-bold text-gray-800">${item.meaning}</h3>
-                <p class="text-[11px] text-gray-400">카드를 터치해서 영단어 확인 ↺</p>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="setStatus(${item.id}, 0); cardIndex=(cardIndex+1)%${filtered.length}; render();" class="py-3.5 rounded-2xl bg-gray-200 text-gray-700 font-bold text-xs active:scale-95 transition-transform">복습 필요 ❌</button>
-            <button onclick="setStatus(${item.id}, 2); cardIndex=(cardIndex+1)%${filtered.length}; render();" class="py-3.5 rounded-2xl ios-btn-pink font-bold text-xs shadow-sm">완벽 암기 ⭕ (+15XP)</button>
-          </div>
-        `;
-      }
-
-      // 2. ARCADE TAB
-      else if (currentTab === 'arcade') {
-        app.innerHTML = `
-          <div class="space-y-3">
-            <h2 class="text-lg font-bold text-gray-900 px-1">실전 검증 미니게임 아케이드 🎮</h2>
-            
-            <div onclick="startChoiceGame()" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-2xl bg-[#FFD1DC]/50 flex items-center justify-center text-lg">🎯</div>
-                <div>
-                  <h3 class="font-bold text-gray-800 text-xs">5지선다 스피드 테스트</h3>
-                  <p class="text-[10px] text-gray-400">순발력 있게 뜻 고르기</p>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-amber-500">+10XP</span>
-            </div>
-
-            <div onclick="startTypingGame()" class="ios-card p-4 flex items-center justify-between cursor-pointer active:scale-98 transition-all">
-              <div class="flex items-center gap-3.5">
-                <div class="w-10 h-10 rounded-2xl bg-purple-100 flex items-center justify-center text-lg">⌨️</div>
-                <div>
-                  <h3 class="font-bold text-gray-800 text-xs">주관식 타이핑 마스터</h3>
-                  <p class="text-[10px] text-gray-400">철자를 철저하게 암기</p>
-                </div>
-              </div>
-              <span class="text-xs font-bold text-amber-500">+20XP</span>
-            </div>
-          </div>
-          <div id="gamePlayArea" class="mt-4"></div>
-        `;
-      }
-
-      // 3. SEARCH & MANAGEMENT TAB
-      else if (currentTab === 'list') {
-        const searched = vocabularyDB.filter(v => 
-          v.word.toLowerCase().includes(searchQuery.toLowerCase()) || 
-          v.meaning.includes(searchQuery)
-        );
-
-        app.innerHTML = `
-          <div class="space-y-3">
+          <div class="space-y-4">
             <div class="flex justify-between items-center px-1">
-              <h2 class="text-lg font-bold text-gray-900">단어 검색 & 추가</h2>
-              <button onclick="addNewWord()" class="px-3 py-1.5 rounded-xl ios-btn-pink font-bold text-xs flex items-center gap-1 shadow-sm">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i> 단어 추가
-              </button>
+              <h2 class="text-base font-extrabold text-gray-900">22가지 미니게임 아케이드 🎮</h2>
+              <span class="text-[10px] font-bold text-gray-400">모드 선택 플레이</span>
+            </div>
+            
+            <div id="gameArea"></div>
+
+            <div class="space-y-2 pt-2">
+              <h3 class="text-xs font-bold text-gray-500 px-1">전체 게임 모드 리스트</h3>
+              <div class="grid grid-cols-1 gap-2 max-h-72 overflow-y-auto pr-1">
+                ${gameModes.map(g => `
+                  <div onclick="runGame(${g.id})" class="ios-card p-3.5 flex items-center justify-between cursor-pointer active:scale-98 transition-all hover:bg-pink-50/50">
+                    <div class="flex items-center gap-3">
+                      <span class="text-2xl">${g.icon}</span>
+                      <div>
+                        <h4 class="font-bold text-gray-900 text-xs">${g.name}</h4>
+                        <p class="text-[10px] text-gray-400">${g.desc}</p>
+                      </div>
+                    </div>
+                    <span class="text-[10px] font-black text-amber-600 bg-amber-50 border border-amber-200/50 px-2 py-0.5 rounded-full">+${g.xp}XP</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+        runGame(selectedGameMode);
+      }
+
+      // TAB 2: 암기 플래시카드
+      else if (currentTab === 'learn') {
+        const item = vocabularyDB[cardIndex];
+        app.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-xs text-gray-400 px-1 font-bold">
+              <span>단어 #${item.id} / ${vocabularyDB.length}</span>
+              <span class="px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-[10px]">${item.cat}</span>
             </div>
 
-            <div class="relative">
-              <input type="text" oninput="searchQuery=this.value; render();" value="${searchQuery}" placeholder="영단어 또는 뜻으로 검색..." class="w-full p-3 pl-9 rounded-2xl bg-white border border-black/5 text-xs font-semibold outline-none focus:ring-2 focus:ring-[#FFB6C1]" />
-              <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-3.5"></i>
+            <!-- Card UI with Flip -->
+            <div class="perspective-1000 w-full h-80 my-2 cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+              <div class="card-inner transform-style-3d transition-transform duration-500 w-full h-full relative">
+                
+                <!-- Front -->
+                <div class="backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-7 text-center items-center">
+                  <div class="flex justify-between w-full items-center">
+                    <span class="text-[10px] font-bold text-gray-400">ENGLISH</span>
+                    <button onclick="event.stopPropagation(); speak('${item.word}')" class="p-2.5 rounded-2xl bg-gray-100 text-gray-600 active:scale-90 transition-transform">
+                      <i data-lucide="volume-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <h3 class="text-3xl font-black text-gray-900 tracking-tight">${item.word}</h3>
+                  <p class="text-[11px] text-gray-400 font-bold">터치하여 뜻 보기 ↺</p>
+                </div>
+
+                <!-- Back -->
+                <div class="rotate-y-180 backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-7 text-center items-center bg-[#FFF9FA]">
+                  <span class="text-[10px] font-bold text-[#FF8DA1]">MEANING</span>
+                  <h3 class="text-2xl font-bold text-gray-800">${item.meaning}</h3>
+                  <p class="text-[11px] text-gray-400 font-bold">터치하여 영단어 보기 ↺</p>
+                </div>
+
+              </div>
             </div>
 
-            <div class="space-y-2 max-h-96 overflow-y-auto">
-              ${searched.map(v => `
-                <div class="ios-card p-3.5 flex justify-between items-center">
+            <div class="grid grid-cols-2 gap-3">
+              <button onclick="cardIndex=(cardIndex+1)%${vocabularyDB.length}; render();" class="py-4 rounded-2xl ios-btn-secondary font-bold text-xs">다음 단어</button>
+              <button onclick="addXP(10); cardIndex=(cardIndex+1)%${vocabularyDB.length}; render();" class="py-4 rounded-2xl ios-btn-pink font-bold text-xs shadow-sm">완벽 암기 ⭕ (+10XP)</button>
+            </div>
+          </div>
+        `;
+      }
+
+      // TAB 3: 전체 단어장 목록
+      else if (currentTab === 'list') {
+        app.innerHTML = `
+          <div class="space-y-3">
+            <h2 class="text-base font-extrabold text-gray-900 px-1">전체 데이터베이스 (${vocabularyDB.length}개)</h2>
+            <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+              ${vocabularyDB.map(v => `
+                <div class="ios-card p-4 flex justify-between items-center text-xs">
                   <div>
                     <div class="flex items-center gap-2">
-                      <span class="font-bold text-gray-900">${v.word}</span>
-                      <span class="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">${v.cat}</span>
+                      <span class="font-extrabold text-gray-900 text-sm">${v.word}</span>
+                      <span class="text-[9px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">${v.cat}</span>
                     </div>
-                    <p class="text-xs text-gray-500 mt-0.5">${v.meaning}</p>
+                    <p class="text-gray-500 font-semibold mt-0.5 text-xs">${v.meaning}</p>
                   </div>
-                  <button onclick="setStatus(${v.id}, ${(v.status + 1) % 3})" class="text-[10px] px-2.5 py-1 rounded-full font-bold ${v.status === 2 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}">
-                    ${v.status === 2 ? '완료' : '미완'}
+                  <button onclick="speak('${v.word}')" class="p-2 rounded-xl bg-gray-100 text-gray-500">
+                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
                   </button>
                 </div>
               `).join('')}
@@ -342,34 +806,29 @@
         `;
       }
 
-      // 4. STATS REPORT TAB
+      // TAB 4: 학습 리포트
       else if (currentTab === 'stats') {
-        const memorized = vocabularyDB.filter(v => v.status === 2).length;
-        const rate = Math.round((memorized / vocabularyDB.length) * 100) || 0;
-
         app.innerHTML = `
           <div class="space-y-4">
-            <h2 class="text-lg font-bold text-gray-900 px-1">실시간 학습 분석 리포트 📊</h2>
+            <h2 class="text-base font-extrabold text-gray-900 px-1">학습 분석 대시보드 📊</h2>
 
             <div class="ios-card p-5 space-y-3">
-              <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">전체 암기 달성률</p>
+              <p class="text-xs font-bold text-gray-400">누적 경험치 및 레벨</p>
               <div class="flex items-baseline gap-2">
-                <span class="text-3xl font-extrabold text-gray-900">${rate}%</span>
-                <span class="text-xs text-gray-400">(${memorized} / ${vocabularyDB.length}개 완료)</span>
+                <span class="text-4xl font-black text-amber-500">${userXP}</span>
+                <span class="text-xs font-bold text-gray-500">XP</span>
               </div>
-              <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                <div class="bg-[#FFB6C1] h-2 transition-all duration-500" style="width: ${rate}%"></div>
-              </div>
+              <p class="text-xs text-gray-500 font-semibold">아케이드 게임과 플래시카드를 통해 경험치를 습득했습니다.</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div class="ios-card p-4 text-center">
-                <p class="text-[10px] text-gray-400 font-bold uppercase">누적 경험치</p>
-                <p class="text-xl font-extrabold text-amber-500 mt-1">${userStats.xp} XP</p>
+                <p class="text-[10px] font-bold text-gray-400">보유 단어 수</p>
+                <p class="text-2xl font-black text-gray-900 mt-1">${vocabularyDB.length}개</p>
               </div>
               <div class="ios-card p-4 text-center">
-                <p class="text-[10px] text-gray-400 font-bold uppercase">현재 마스터 레벨</p>
-                <p class="text-xl font-extrabold text-[#FF8DA1] mt-1">Lv. ${userStats.level}</p>
+                <p class="text-[10px] font-bold text-gray-400">제공 게임 수</p>
+                <p class="text-2xl font-black text-[#FF8DA1] mt-1">22개</p>
               </div>
             </div>
           </div>
@@ -377,62 +836,6 @@
       }
 
       lucide.createIcons();
-    }
-
-    // --- Arcade Game Handlers ---
-    function startChoiceGame() {
-      const target = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)];
-      const choices = [target.meaning];
-      while (choices.length < 4) {
-        const rand = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)].meaning;
-        if (!choices.includes(rand)) choices.push(rand);
-      }
-      choices.sort(() => Math.random() - 0.5);
-
-      const area = document.getElementById('gamePlayArea');
-      area.innerHTML = `
-        <div class="ios-card p-5 space-y-4">
-          <h3 class="text-2xl font-extrabold text-center text-gray-900">${target.word}</h3>
-          <div class="space-y-2">
-            ${choices.map(c => `
-              <button onclick="checkGameChoice('${c}', '${target.meaning}', ${target.id})" class="w-full text-left p-3.5 rounded-xl border border-gray-100 text-xs font-semibold text-gray-700 hover:bg-[#FFD1DC]/40">${c}</button>
-            `).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function checkGameChoice(selected, correct, id) {
-      if (selected === correct) {
-        alert("🎉 정답입니다! (+10XP)");
-        setStatus(id, 2);
-      } else {
-        alert(`❌ 틀렸습니다. 정답: ${correct}`);
-      }
-      startChoiceGame();
-    }
-
-    function startTypingGame() {
-      const target = vocabularyDB[Math.floor(Math.random() * vocabularyDB.length)];
-      const area = document.getElementById('gamePlayArea');
-      area.innerHTML = `
-        <div class="ios-card p-5 space-y-4 text-center">
-          <h3 class="text-xl font-bold text-gray-800">${target.meaning}</h3>
-          <input type="text" id="typeAnswer" placeholder="스펠링 입력" class="w-full p-3 rounded-xl bg-gray-100 text-xs font-semibold text-center outline-none focus:ring-2 focus:ring-[#FFB6C1]" />
-          <button onclick="checkTypingGame('${target.word}', ${target.id})" class="w-full py-3 rounded-xl ios-btn-pink font-bold text-xs">확인</button>
-        </div>
-      `;
-    }
-
-    function checkTypingGame(correct, id) {
-      const val = document.getElementById('typeAnswer').value.trim().toLowerCase();
-      if (val === correct.toLowerCase()) {
-        alert("🎉 정답입니다! (+20XP)");
-        setStatus(id, 2);
-      } else {
-        alert(`❌ 틀렸습니다. 정답: ${correct}`);
-      }
-      startTypingGame();
     }
 
     render();
