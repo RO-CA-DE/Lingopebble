@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>LingoPebble — iOS Style Vibe Vocabulary</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background-color: #F8F8FA;
+      color: #1C1C1E;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* iOS Glassmorphism & UI Utilities */
+    .ios-glass {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .ios-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .ios-button-pink {
+      background-color: #FFB6C1;
+      color: #1C1C1E;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .ios-button-pink:active {
+      transform: scale(0.96);
+      background-color: #FFA0B0;
+    }
+
+    .ios-squircle {
+      border-radius: 22%;
+    }
+
+    /* Flashcard Flip Animation */
+    .perspective-1000 { perspective: 1000px; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .backface-hidden { backface-visibility: hidden; }
+    .rotate-y-180 { transform: rotateY(180deg); }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+  </style>
+</head>
+<body class="flex justify-center min-h-screen bg-[#F0F0F3]">
+
+  <!-- Mobile Viewport Container -->
+  <div class="w-full max-w-md h-screen flex flex-col justify-between relative overflow-hidden bg-[#F8F8FA] shadow-2xl">
+
+    <!-- Top Header -->
+    <header class="ios-glass sticky top-0 z-40 px-6 pt-12 pb-4 flex justify-between items-center border-b border-black/5">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 ios-squircle bg-gradient-to-br from-[#FFD1DC] to-[#FFB6C1] flex items-center justify-center font-bold text-lg shadow-sm">
+          ✨
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-black">LingoPebble</h1>
+          <p class="text-[10px] text-gray-400 font-medium tracking-wide uppercase">Middle School Vol.1</p>
+        </div>
+      </div>
+      
+      <!-- Streak Counter -->
+      <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFD1DC]/30 border border-[#FFB6C1]/40">
+        <span class="text-xs">🔥</span>
+        <span id="streakCount" class="text-xs font-bold text-gray-800">7일째</span>
+      </div>
+    </header>
+
+    <!-- Dynamic Content Area -->
+    <main id="appContent" class="flex-1 overflow-y-auto px-5 py-6 space-y-6">
+      <!-- Content renders dynamically here -->
+    </main>
+
+    <!-- Bottom Navigation Bar (iOS Style) -->
+    <nav class="ios-glass sticky bottom-0 z-40 px-6 py-3 border-t border-black/5 flex justify-around items-center">
+      <button onclick="switchTab('learn')" class="nav-btn flex flex-col items-center gap-1 text-[#FF8DA1]" data-tab="learn">
+        <i data-lucide="book-open" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">학습</span>
+      </button>
+      <button onclick="switchTab('quiz')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="quiz">
+        <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">퀴즈</span>
+      </button>
+      <button onclick="switchTab('words')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="words">
+        <i data-lucide="layers" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">단어장</span>
+      </button>
+      <button onclick="switchTab('profile')" class="nav-btn flex flex-col items-center gap-1 text-gray-400" data-tab="profile">
+        <i data-lucide="user" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium">프로필</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- JavaScript App Logic -->
+  <script>
+    // --- 1. 중1~중3 필수 영단어 DB (샘플 30개 내장, 확장 용이 구조) ---
+    const vocabularyDB = [
+      { id: 1, word: "abandon", meaning: "버리다, 포기하다", level: "중3", category: "기본", memorized: false },
+      { id: 2, word: "brilliant", meaning: "훌륭한, 명석한", level: "중2", category: "기본", memorized: true },
+      { id: 3, word: "candidate", meaning: "후보자, 지원자", level: "중3", category: "심화", memorized: false },
+      { id: 4, word: "delight", meaning: "기쁨, 즐겁게 하다", level: "중1", category: "기본", memorized: true },
+      { id: 5, word: "eager", meaning: "열심인, 간절히 바라는", level: "중2", category: "기본", memorized: false },
+      { id: 6, word: "frequently", meaning: "자주, 흔히", level: "중2", category: "기본", memorized: false },
+      { id: 7, word: "generous", meaning: "관대한, 후한", level: "중2", category: "기본", memorized: false },
+      { id: 8, word: "hesitate", meaning: "망설이다, 주저하다", level: "중3", category: "심화", memorized: false },
+      { id: 9, word: "innocent", meaning: "무죄의, 순진한", level: "중2", category: "기본", memorized: false },
+      { id: 10, word: "journey", meaning: "여행, 여정", level: "중1", category: "기본", memorized: true },
+      { id: 11, word: "knowledge", meaning: "지식, 학식", level: "중1", category: "기본", memorized: false },
+      { id: 12, word: "landscape", meaning: "풍경, 경치", level: "중3", category: "심화", memorized: false },
+      { id: 13, word: "magnificent", meaning: "웅장한, 장엄한", level: "중3", category: "심화", memorized: false },
+      { id: 14, word: "neighborhood", meaning: "이웃, 동네", level: "중1", category: "기본", memorized: true },
+      { id: 15, word: "opportunity", meaning: "기회", level: "중2", category: "기본", memorized: false },
+      { id: 16, word: "precious", meaning: "귀중한, 값진", level: "중2", category: "기본", memorized: false },
+      { id: 17, word: "quality", meaning: "품질, 특성", level: "중1", category: "기본", memorized: false },
+      { id: 18, word: "relieve", meaning: "안도하게 하다, 경감하다", level: "중3", category: "심화", memorized: false },
+      { id: 19, word: "stubborn", meaning: "고집스러운, 완강한", level: "중3", category: "심화", memorized: false },
+      { id: 20, word: "treasure", meaning: "보물, 소중히 여기다", level: "중1", category: "기본", memorized: true }
+    ];
+
+    // --- State Management ---
+    let currentTab = 'learn';
+    let cardIndex = 0;
+    let wrongWords = [];
+
+    // --- TTS (Text to Speech) ---
+    function speakWord(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        speechSynthesis.speak(utterance);
+      }
+    }
+
+    // --- Tab Switching Logic ---
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const isActive = btn.dataset.tab === tab;
+        btn.classList.toggle('text-[#FF8DA1]', isActive);
+        btn.classList.toggle('text-gray-400', !isActive);
+      });
+
+      render();
+    }
+
+    // --- Render App Content ---
+    function render() {
+      const app = document.getElementById('appContent');
+
+      if (currentTab === 'learn') {
+        const currentWord = vocabularyDB[cardIndex];
+        app.innerHTML = `
+          <!-- Header Banner -->
+          <div class="ios-card p-5 bg-gradient-to-r from-[#FFF0F3] to-[#FFFFFF] border-l-4 border-[#FFB6C1]">
+            <p class="text-xs font-semibold text-[#FF8DA1] uppercase tracking-wider">Today's Goal</p>
+            <h2 class="text-lg font-bold text-gray-800 mt-0.5">오늘의 필수 영단어 카드</h2>
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-3 overflow-hidden">
+              <div class="bg-[#FFB6C1] h-1.5 rounded-full transition-all duration-300" style="width: ${((cardIndex + 1) / vocabularyDB.length) * 100}%"></div>
+            </div>
+            <p class="text-[11px] text-gray-400 text-right mt-1">${cardIndex + 1} / ${vocabularyDB.length}</p>
+          </div>
+
+          <!-- Flashcard Container -->
+          <div class="perspective-1000 w-full h-80 my-4 cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+            <div class="card-inner transform-style-3d transition-transform duration-500 w-full h-full relative">
+              
+              <!-- Front (Word) -->
+              <div class="backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-8 text-center items-center">
+                <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">${currentWord.level}</span>
+                <div>
+                  <h3 class="text-3xl font-extrabold text-gray-900 tracking-tight">${currentWord.word}</h3>
+                  <button onclick="event.stopPropagation(); speakWord('${currentWord.word}')" class="mt-4 p-3 rounded-full bg-[#FFD1DC]/40 text-gray-700 hover:bg-[#FFB6C1] transition-colors">
+                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-400">터치해서 뜻 확인하기 ↺</p>
+              </div>
+
+              <!-- Back (Meaning) -->
+              <div class="rotate-y-180 backface-hidden ios-card absolute inset-0 flex flex-col justify-between p-8 text-center items-center bg-[#FFF9FA]">
+                <span class="px-3 py-1 rounded-full text-xs font-medium bg-[#FFD1DC]/60 text-[#FF8DA1]">의미</span>
+                <h3 class="text-2xl font-bold text-gray-800">${currentWord.meaning}</h3>
+                <p class="text-xs text-gray-400">터치해서 뒤집기 ↺</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="flex gap-3">
+            <button onclick="prevCard()" class="flex-1 py-3.5 rounded-2xl bg-white border border-black/5 font-semibold text-gray-600 shadow-sm active:scale-95 transition-transform">이전</button>
+            <button onclick="nextCard()" class="flex-1 py-3.5 rounded-2xl ios-button-pink font-semibold shadow-sm">다음</button>
+          </div>
+        `;
+      } else if (currentTab === 'quiz') {
+        app.innerHTML = `
+          <div class="space-y-4">
+            <h2 class="text-xl font-bold text-gray-900 px-1">맞춤형 학습 모드</h2>
+            
+            <div onclick="startQuiz('choice')" class="ios-card p-5 flex items-center justify-between cursor-pointer hover:border-[#FFB6C1] transition-all">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-[#FFD1DC]/50 flex items-center justify-center text-xl">🎯</div>
+                <div>
+                  <h3 class="font-bold text-gray-800">5지선다 테스트</h3>
+                  <p class="text-xs text-gray-400">올바른 뜻을 빠르게 선택하세요</p>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-gray-300"></i>
+            </div>
+
+            <div onclick="startQuiz('ox')" class="ios-card p-5 flex items-center justify-between cursor-pointer hover:border-[#FFB6C1] transition-all">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-xl">⭕</div>
+                <div>
+                  <h3 class="font-bold text-gray-800">O / X 퀴즈</h3>
+                  <p class="text-xs text-gray-400">단어와 매칭이 맞는지 판별하세요</p>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-gray-300"></i>
+            </div>
+
+            <div onclick="startQuiz('typing')" class="ios-card p-5 flex items-center justify-between cursor-pointer hover:border-[#FFB6C1] transition-all">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-xl">⌨️</div>
+                <div>
+                  <h3 class="font-bold text-gray-800">주관식 타이핑</h3>
+                  <p class="text-xs text-gray-400">철자를 정확하게 입력하세요</p>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" class="w-5 h-5 text-gray-300"></i>
+            </div>
+          </div>
+        `;
+      } else if (currentTab === 'words') {
+        app.innerHTML = `
+          <div class="space-y-4">
+            <div class="flex justify-between items-center px-1">
+              <h2 class="text-xl font-bold text-gray-900">단어장 목록</h2>
+              <span class="text-xs text-gray-400">총 ${vocabularyDB.length}개</span>
+            </div>
+
+            <div class="space-y-2.5">
+              ${vocabularyDB.map(v => `
+                <div class="ios-card p-4 flex justify-between items-center">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-gray-900">${v.word}</span>
+                      <button onclick="speakWord('${v.word}')" class="text-gray-400 hover:text-gray-600">
+                        <i data-lucide="volume-1" class="w-4 h-4"></i>
+                      </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-0.5">${v.meaning}</p>
+                  </div>
+                  <span class="text-[10px] px-2.5 py-1 rounded-full ${v.memorized ? 'bg-green-50 text-green-600 font-semibold' : 'bg-gray-100 text-gray-400'}">
+                    ${v.memorized ? '완료' : '학습중'}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (currentTab === 'profile') {
+        app.innerHTML = `
+          <div class="space-y-6">
+            <div class="ios-card p-6 text-center space-y-3">
+              <div class="w-20 h-20 mx-auto ios-squircle bg-gradient-to-tr from-[#FFB6C1] to-[#FFD1DC] flex items-center justify-center text-2xl shadow-md">
+                🎀
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">Apple Vibe Student</h2>
+                <p class="text-xs text-gray-400">rossy@lingopebble.app</p>
+              </div>
+            </div>
+
+            <div class="ios-card p-5 space-y-4">
+              <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">학습 통계</h3>
+              <div class="grid grid-cols-2 gap-3 text-center">
+                <div class="bg-gray-50 p-3 rounded-2xl">
+                  <p class="text-xs text-gray-400">암기한 단어</p>
+                  <p class="text-lg font-bold text-gray-800 mt-1">${vocabularyDB.filter(v => v.memorized).length}개</p>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-2xl">
+                  <p class="text-xs text-gray-400">연속 학습</p>
+                  <p class="text-lg font-bold text-[#FF8DA1] mt-1">7일째</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      lucide.createIcons();
+    }
+
+    // --- Flashcard Helper Controls ---
+    function nextCard() {
+      if (cardIndex < vocabularyDB.length - 1) {
+        cardIndex++;
+        render();
+      }
+    }
+
+    function prevCard() {
+      if (cardIndex > 0) {
+        cardIndex--;
+        render();
+      }
+    }
+
+    function startQuiz(type) {
+      alert(`${type.toUpperCase()} 모드가 선택되었습니다. 개발 연동용 핸들러입니다.`);
+    }
+
+    // Initialize Page
+    render();
+  </script>
+</body>
+</html>
